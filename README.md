@@ -133,14 +133,48 @@ User authenticated
 Role & Company verified
   ↓
 Request processed
+```
 
+### JWT Information
+
+The JWT contains information such as:
+
+```text
 Email
 Role
 Company ID
 Issued Time
 Expiration Time
+```
 
+### Security Features
 
+- JWT-based authentication
+- Stateless authentication
+- BCrypt password hashing
+- Role-based authorization
+- Protected REST APIs
+- Company-level data isolation
+- Token expiration
+- Unauthorized request handling
+
+---
+
+# 🏢 Multi-Company Data Isolation
+
+StockFlow supports multiple companies using the same application.
+
+Each company has its own:
+
+- Users
+- Products
+- Categories
+- Suppliers
+- Stock Transactions
+
+Company data is isolated using the authenticated user's company information.
+
+```text
 Company A
 │
 ├── Users
@@ -157,7 +191,15 @@ Company B
 ├── Categories
 ├── Suppliers
 └── Stock History
+```
 
+Users from one company cannot access inventory data belonging to another company.
+
+---
+
+# 🏗️ Application Architecture
+
+```text
                     ┌─────────────────────┐
                     │      React.js       │
                     │      Frontend       │
@@ -182,7 +224,15 @@ Company B
                     │       MySQL         │
                     │      Database       │
                     └─────────────────────┘
+```
 
+---
+
+# 🧩 Backend Architecture
+
+The backend follows a layered architecture:
+
+```text
 Controller
     ↓
 Service
@@ -190,53 +240,356 @@ Service
 Repository
     ↓
 Database
+```
 
-🌐 REST API
-🔐 Authentication
+### Controller Layer
+
+Handles HTTP requests and REST API endpoints.
+
+### Service Layer
+
+Contains business logic such as:
+
+- Product validation
+- Stock validation
+- Company ownership verification
+- User management
+- Authentication
+- Stock transaction creation
+
+### Repository Layer
+
+Uses Spring Data JPA to communicate with the MySQL database.
+
+### Entity Layer
+
+Represents database tables using JPA entities.
+
+---
+
+# 📦 Main Modules
+
+- 🔐 Authentication
+- 📊 Dashboard
+- 📦 Products
+- 🗂️ Categories
+- 🚚 Suppliers
+- 📈 Stock Management
+- 🧾 Stock History
+- 📑 Reports
+- 👤 User Management
+
+---
+
+# 📦 Product Management
+
+Products are the central part of the inventory system.
+
+Each product contains:
+
+- Product Name
+- Price
+- Quantity
+- Description
+- Category
+- Supplier
+- Company
+
+### Product Operations
+
+- Add Product
+- View Product
+- Update Product
+- Delete Product
+
+Only ADMIN users can modify product information.
+
+Both ADMIN and STAFF users can view products.
+
+---
+
+# 🗂️ Category Management
+
+Categories help organize inventory products.
+
+Examples:
+
+- Laptops
+- Mobile Phones
+- Accessories
+- Monitors
+- Keyboards
+
+### Admin
+
+- Add Category
+- Update Category
+- Delete Category
+
+### Staff
+
+- View Categories
+
+---
+
+# 🚚 Supplier Management
+
+StockFlow allows administrators to manage suppliers.
+
+Supplier information includes:
+
+- Supplier Name
+- Email
+- Phone
+- Address
+- Company
+
+### Admin
+
+- Add Supplier
+- Update Supplier
+- Delete Supplier
+
+### Staff
+
+- View Suppliers
+
+---
+
+# 📈 Stock Management
+
+StockFlow provides dedicated stock management operations.
+
+Admins can increase or decrease the quantity of a product.
+
+### Increase Stock
+
+```text
+Current Stock = 20
+
+Increase = 10
+
+New Stock = 30
+```
+
+### Decrease Stock
+
+```text
+Current Stock = 30
+
+Decrease = 5
+
+New Stock = 25
+```
+
+The application validates stock operations.
+
+### Stock Validation
+
+- Stock amount must be positive
+- Stock cannot become negative
+- Product ownership is verified
+- Company ownership is verified
+- Every stock movement is recorded
+
+---
+
+# 🧾 Stock History
+
+Every stock increase or decrease creates a stock transaction.
+
+Example:
+
+```text
+Product: Dell Inspiron 15
+
+INCREASE  +10
+DECREASE  -5
+```
+
+Stock history contains:
+
+- Product
+- Transaction Type
+- Quantity
+- Date and Time
+- Company
+
+This provides a clear record of inventory movement.
+
+---
+
+# 📊 Dashboard
+
+The StockFlow dashboard provides an overview of the company's inventory.
+
+It displays:
+
+- Total Products
+- Total Inventory Quantity
+- Low Stock Products
+- Inventory Statistics
+- Recent Stock Activities
+- Stock Movement Information
+- Graphical Insights
+
+Charts and visualizations are implemented using **Recharts**.
+
+---
+
+# 📑 Reports
+
+The Reports section provides inventory-related insights using product and stock transaction data.
+
+It helps users understand:
+
+- Product quantities
+- Stock movement
+- Inventory statistics
+- Low-stock products
+- Inventory distribution
+
+---
+
+# 🔎 Search & Filtering
+
+The Products section provides multiple search and filtering options.
+
+Users can search/filter by:
+
+- Product Name
+- Category
+- Stock Quantity
+- Supplier
+
+This makes it easier to find products when inventory grows.
+
+---
+
+# 🛠️ Technology Stack
+
+## Frontend
+
+- React.js
+- JavaScript
+- React Router
+- Axios
+- Tailwind CSS
+- Recharts
+
+## Backend
+
+- Java
+- Spring Boot
+- Spring Security
+- Spring Data JPA
+- Hibernate
+- REST APIs
+- JWT
+- BCrypt
+- Maven
+
+## Database
+
+- MySQL
+
+## Developer Tools
+
+- Git
+- GitHub
+- Postman
+- VS Code
+- Docker
+
+## Deployment
+
+- Vercel – Frontend
+- Render – Backend
+- Aiven – MySQL Database
+
+---
+
+# 🌐 REST API
+
+## 🔐 Authentication
+
+```http
 POST /api/auth/register
 POST /api/auth/login
-📦 Products
+```
+
+## 📦 Products
+
+```http
 GET    /api/products
 GET    /api/products/{id}
 POST   /api/products
 PUT    /api/products/{id}
 DELETE /api/products/{id}
-Stock Operations
+```
+
+### Stock Operations
+
+```http
 POST /api/products/{id}/stock/increase
 POST /api/products/{id}/stock/decrease
-🗂️ Categories
+```
+
+## 🗂️ Categories
+
+```http
 GET    /api/categories
 GET    /api/categories/{id}
 POST   /api/categories
 PUT    /api/categories/{id}
 DELETE /api/categories/{id}
-🚚 Suppliers
+```
+
+## 🚚 Suppliers
+
+```http
 GET    /api/suppliers
 GET    /api/suppliers/{id}
 POST   /api/suppliers
 PUT    /api/suppliers/{id}
 DELETE /api/suppliers/{id}
-👤 Users
+```
+
+## 👤 Users
+
+```http
 GET    /api/users
 POST   /api/users
 PUT    /api/users/{id}
 DELETE /api/users/{id}
+```
 
-User management endpoints are restricted to ADMIN users.
+> User management endpoints are restricted to ADMIN users.
 
-🧾 Stock Transactions
+## 🧾 Stock Transactions
+
+```http
 GET /api/stock-transactions
-🗃️ Database Design
+```
+
+---
+
+# 🗃️ Database Design
 
 Main entities:
 
+```text
 Company
 User
 Product
 Category
 Supplier
 StockTransaction
-Relationship Overview
+```
+
+### Relationship Overview
+
+```text
                  Company
                     │
         ┌───────────┼───────────┐
@@ -250,14 +603,24 @@ Relationship Overview
                     │
                     ▼
              StockTransaction
-Main Database Tables
+```
+
+### Main Database Tables
+
+```text
 companies
 users
 products
 categories
 suppliers
 stock_transactions
-📁 Project Structure
+```
+
+---
+
+# 📁 Project Structure
+
+```text
 StockFlow/
 │
 ├── backend/
@@ -286,78 +649,126 @@ StockFlow/
 │
 ├── .gitignore
 └── README.md
-⚙️ Local Setup
-1. Clone the Repository
+```
+
+---
+
+# ⚙️ Local Setup
+
+## 1. Clone the Repository
+
+```bash
 git clone https://github.com/nitishkpathak/StockFlow.git
 cd StockFlow
-2. Backend Setup
+```
+
+---
+
+## 2. Backend Setup
 
 Go to the backend directory:
 
+```bash
 cd backend
+```
 
 Check Java installation:
 
+```bash
 java -version
+```
 
 Build the project:
 
-Windows
+### Windows
+
+```bash
 mvnw.cmd clean package
+```
 
 Run the backend:
 
+```bash
 mvnw.cmd spring-boot:run
+```
 
 Backend will run at:
 
+```text
 http://localhost:8080
-3. Database Setup
+```
+
+---
+
+## 3. Database Setup
 
 Create a MySQL database:
 
+```sql
 CREATE DATABASE stockflow_db;
+```
 
 Configure the following environment variables:
 
+```text
 DB_URL
 DB_USERNAME
 DB_PASSWORD
 JWT_SECRET
 FRONTEND_URL
+```
 
 Example:
 
+```text
 DB_URL=jdbc:mysql://localhost:3306/stockflow_db
 DB_USERNAME=root
 DB_PASSWORD=your_password
 JWT_SECRET=your_secret_key
 FRONTEND_URL=http://localhost:3000
+```
 
-Never commit real database credentials or JWT secrets to GitHub.
+> Never commit real database credentials or JWT secrets to GitHub.
 
-4. Frontend Setup
+---
+
+## 4. Frontend Setup
 
 Open another terminal.
 
+```bash
 cd frontend
+```
 
 Install dependencies:
 
+```bash
 npm install
+```
 
 Create the frontend environment variable:
 
+```text
 REACT_APP_API_URL=http://localhost:8080/api
+```
 
 Start the frontend:
 
+```bash
 npm start
+```
 
 Frontend will run at:
 
+```text
 http://localhost:3000
-🔄 Complete Application Flow
+```
+
+---
+
+# 🔄 Complete Application Flow
+
+```text
                          User
                            │
                            ▼
@@ -392,7 +803,13 @@ http://localhost:3000
                            │
                            ▼
                          MySQL
-🔒 Authorization Flow
+```
+
+---
+
+# 🔒 Authorization Flow
+
+```text
 ADMIN
  │
  ├── Product CRUD              ✅
@@ -412,57 +829,71 @@ STAFF
  ├── View Stock History        ✅
  ├── View Reports              ✅
  └── Modify Inventory          ❌
-🧪 Testing
+```
 
-REST APIs can be tested using Postman.
+---
+
+# 🧪 Testing
+
+REST APIs can be tested using **Postman**.
 
 Testing includes:
 
-User Registration
-User Login
-JWT Authentication
-Product CRUD
-Category CRUD
-Supplier CRUD
-Stock Increase
-Stock Decrease
-Stock History
-User Management
-Role-Based Authorization
-Company Data Isolation
-🛡️ Validation & Error Handling
+- User Registration
+- User Login
+- JWT Authentication
+- Product CRUD
+- Category CRUD
+- Supplier CRUD
+- Stock Increase
+- Stock Decrease
+- Stock History
+- User Management
+- Role-Based Authorization
+- Company Data Isolation
+
+---
+
+# 🛡️ Validation & Error Handling
 
 The application validates important operations such as:
 
-Required fields
-Duplicate email
-Positive stock quantity
-Insufficient stock
-Invalid JWT token
-Expired JWT token
-Product ownership
-Company ownership
-User permissions
+- Required fields
+- Duplicate email
+- Positive stock quantity
+- Insufficient stock
+- Invalid JWT token
+- Expired JWT token
+- Product ownership
+- Company ownership
+- User permissions
 
 Unauthorized requests are rejected by Spring Security.
 
-📱 Responsive Design
+---
+
+# 📱 Responsive Design
 
 The frontend is designed to work across different screen sizes.
 
 Responsive UI is implemented for:
 
-Login
-Signup
-Dashboard
-Navbar
-Products
-Categories
-Suppliers
-Forms
-Tables
-Reports
-☁️ Deployment Architecture
+- Login
+- Signup
+- Dashboard
+- Navbar
+- Products
+- Categories
+- Suppliers
+- Forms
+- Tables
+- Reports
+
+---
+
+# ☁️ Deployment Architecture
+
+```text
                  ┌───────────────────┐
                  │      Vercel       │
                  │  React Frontend   │
@@ -481,98 +912,123 @@ Reports
                  │      Aiven        │
                  │  MySQL Database   │
                  └───────────────────┘
-Frontend
+```
 
-https://stock-flow-roan-alpha.vercel.app
+### Frontend
 
-Backend
+[https://stock-flow-roan-alpha.vercel.app](https://stock-flow-roan-alpha.vercel.app)
 
-https://stockflow-backend-k27w.onrender.com
+### Backend
 
-Database
+[https://stockflow-backend-k27w.onrender.com](https://stockflow-backend-k27w.onrender.com)
 
-Aiven MySQL
+### Database
 
-📸 Screenshots
+**Aiven MySQL**
+
+---
+
+# 📸 Screenshots
 
 Screenshots of the application can be added here.
 
-🔐 Login
+### 🔐 Login
 
-Add login screenshot here.
+_Add login screenshot here._
 
-📊 Dashboard
+### 📊 Dashboard
 
-Add dashboard screenshot here.
+_Add dashboard screenshot here._
 
-📦 Products
+### 📦 Products
 
-Add products screenshot here.
+_Add products screenshot here._
 
-🗂️ Categories
+### 🗂️ Categories
 
-Add categories screenshot here.
+_Add categories screenshot here._
 
-🚚 Suppliers
+### 🚚 Suppliers
 
-Add suppliers screenshot here.
+_Add suppliers screenshot here._
 
-🧾 Stock History
+### 🧾 Stock History
 
-Add stock history screenshot here.
+_Add stock history screenshot here._
 
-📑 Reports
+### 📑 Reports
 
-Add reports screenshot here.
+_Add reports screenshot here._
 
-🎯 Learning Outcomes
+---
+
+# 🎯 Learning Outcomes
 
 Through this project, I gained practical experience with:
 
-Java
-Spring Boot
-Spring Security
-JWT Authentication
-REST API Development
-Spring Data JPA
-Hibernate
-MySQL
-React.js
-React Router
-Axios
-Tailwind CSS
-Recharts
-Role-Based Authorization
-Multi-Company Data Isolation
-CRUD Operations
-Database Relationships
-API Testing
-Git & GitHub
-Docker
-Cloud Deployment
-🔮 Future Improvements
+- Java
+- Spring Boot
+- Spring Security
+- JWT Authentication
+- REST API Development
+- Spring Data JPA
+- Hibernate
+- MySQL
+- React.js
+- React Router
+- Axios
+- Tailwind CSS
+- Recharts
+- Role-Based Authorization
+- Multi-Company Data Isolation
+- CRUD Operations
+- Database Relationships
+- API Testing
+- Git & GitHub
+- Docker
+- Cloud Deployment
+
+---
+
+# 🔮 Future Improvements
 
 Possible future enhancements include:
 
-📧 Low-stock email notifications
-📄 PDF/Excel report export
-🖼️ Product image upload
-📱 Barcode / QR code support
-🔄 Refresh token mechanism
-🔑 Password reset through email
-📊 Advanced inventory analytics
-🧾 Detailed audit logs
-🧪 Automated unit and integration testing
-🔁 CI/CD pipeline
-👨‍💻 Author
-Nitish Kumar Pathak
+- 📧 Low-stock email notifications
+- 📄 PDF/Excel report export
+- 🖼️ Product image upload
+- 📱 Barcode / QR code support
+- 🔄 Refresh token mechanism
+- 🔑 Password reset through email
+- 📊 Advanced inventory analytics
+- 🧾 Detailed audit logs
+- 🧪 Automated unit and integration testing
+- 🔁 CI/CD pipeline
 
-Software Engineer | Java · Spring Boot · JavaScript · React.js · Node.js
+---
 
-🔗 GitHub
+# 👨‍💻 Author
 
-Nitish Kumar Pathak
+## Nitish Kumar Pathak
 
-🌐 Portfolio
+**Software Engineer | Java · Spring Boot · JavaScript · React.js · Node.js**
 
-View Portfolio
+### 🔗 GitHub
+
+[Nitish Kumar Pathak](https://github.com/nitishkpathak)
+
+### 🌐 Portfolio
+
+[View Portfolio](https://nitishkpathak.github.io/Nitish-Portfolio/)
+
+---
+
+# ⭐ Support
+
+If you find this project useful, consider giving the repository a ⭐ on GitHub.
+
+---
+
+## 📄 License
+
+This project is created for learning, development and portfolio purposes.
