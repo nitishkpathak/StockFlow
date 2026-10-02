@@ -44,8 +44,14 @@ public class SecurityConfig {
         CorsConfiguration configuration =
                 new CorsConfiguration();
 
+        String frontendUrl = System.getenv("FRONTEND_URL");
+
+        if (frontendUrl == null || frontendUrl.isBlank()) {
+            frontendUrl = "http://localhost:3000";
+        }
+
         configuration.setAllowedOrigins(
-                List.of("http://localhost:3000")
+                List.of(frontendUrl)
         );
 
         configuration.setAllowedMethods(
@@ -171,26 +177,41 @@ public class SecurityConfig {
                         // PRODUCTS
                         // =========================
 
-                        // Only ADMIN can delete products
+                        // ADMIN + STAFF can view products
                         .requestMatchers(
-                                HttpMethod.DELETE,
-                                "/api/products/**"
-                        ).hasRole("ADMIN")
-
-                        // ADMIN + STAFF can use other product APIs
-                        .requestMatchers(
+                                HttpMethod.GET,
                                 "/api/products/**"
                         ).hasAnyRole(
                                 "ADMIN",
                                 "STAFF"
                         )
 
+                        // Only ADMIN can add products
+                        .requestMatchers(
+                                HttpMethod.POST,
+                                "/api/products/**"
+                        ).hasRole("ADMIN")
+
+                        // Only ADMIN can update products
+                        .requestMatchers(
+                                HttpMethod.PUT,
+                                "/api/products/**"
+                        ).hasRole("ADMIN")
+
+                        // Only ADMIN can delete products
+                        .requestMatchers(
+                                HttpMethod.DELETE,
+                                "/api/products/**"
+                        ).hasRole("ADMIN")
+
 
                         // =========================
                         // STOCK TRANSACTIONS
                         // =========================
 
+                        // ADMIN + STAFF can view stock history
                         .requestMatchers(
+                                HttpMethod.GET,
                                 "/api/stock-transactions/**"
                         ).hasAnyRole(
                                 "ADMIN",

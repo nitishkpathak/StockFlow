@@ -1,9 +1,10 @@
 import axios from "axios";
+import API_URL from "./apiConfig";
 
-const API_URL =
-  "http://localhost:8080/api/stock-transactions";
+const STOCK_TRANSACTION_API_URL =
+  `${API_URL}/stock-transactions`;
 
 // Get all stock transactions
 export const getAllTransactions = () => {
-  return axios.get(API_URL);
+  return axios.get(STOCK_TRANSACTION_API_URL);
 };

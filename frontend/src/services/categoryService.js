@@ -3,14 +3,15 @@
 // ============================================================
 
 import axios from "axios";
+import API_URL from "./apiConfig";
 
 
 // ============================================================
 // BASE API URL
 // ============================================================
 
-const API_URL =
-  "http://localhost:8080/api/categories";
+const CATEGORY_API_URL =
+  `${API_URL}/categories`;
 
 
 // ============================================================
@@ -19,7 +20,7 @@ const API_URL =
 
 export const getAllCategories = () => {
 
-  return axios.get(API_URL);
+  return axios.get(CATEGORY_API_URL);
 
 };
 
@@ -31,7 +32,7 @@ export const getAllCategories = () => {
 export const getCategoryById = (id) => {
 
   return axios.get(
-    `${API_URL}/${id}`
+    `${CATEGORY_API_URL}/${id}`
   );
 
 };
@@ -44,7 +45,7 @@ export const getCategoryById = (id) => {
 export const addCategory = (category) => {
 
   return axios.post(
-    API_URL,
+    CATEGORY_API_URL,
     category
   );
 
@@ -61,7 +62,7 @@ export const updateCategory = (
 ) => {
 
   return axios.put(
-    `${API_URL}/${id}`,
+    `${CATEGORY_API_URL}/${id}`,
     category
   );
 
@@ -75,7 +76,7 @@ export const updateCategory = (
 export const deleteCategory = (id) => {
 
   return axios.delete(
-    `${API_URL}/${id}`
+    `${CATEGORY_API_URL}/${id}`
   );
 
 };

@@ -1,23 +1,24 @@
 import axios from "axios";
+import API_URL from "./apiConfig";
 
-const API_URL = "http://localhost:8080/api/users";
+const USER_API_URL = `${API_URL}/users`;
 
 // Get all users
 export const getAllUsers = () => {
-  return axios.get(API_URL);
+  return axios.get(USER_API_URL);
 };
 
 // Add user
 export const addUser = (user) => {
-  return axios.post(API_URL, user);
+  return axios.post(USER_API_URL, user);
 };
 
 // Update user
 export const updateUser = (id, user) => {
-  return axios.put(`${API_URL}/${id}`, user);
+  return axios.put(`${USER_API_URL}/${id}`, user);
 };
 
 // Delete user
 export const deleteUser = (id) => {
-  return axios.delete(`${API_URL}/${id}`);
+  return axios.delete(`${USER_API_URL}/${id}`);
 };

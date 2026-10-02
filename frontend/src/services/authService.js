@@ -1,10 +1,9 @@
 import axios from "axios";
-
-const API_URL = "http://localhost:8080/api/auth";
+import API_URL from "./apiConfig";
 
 // Login user
 export const loginUser = (credentials) => {
-  return axios.post(`${API_URL}/login`, credentials);
+  return axios.post(`${API_URL}/auth/login`, credentials);
 };
 
 // Save logged-in user
